@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -56,19 +57,21 @@ public class TweetSearch {
 		return response;
 	}
 	
-	public static void parseTweet(String jsonString) {
+	public static ArrayList<Tweet> parseTweet(String jsonString, String searchString) {
+		ArrayList<Tweet> tweets = new ArrayList<Tweet>();
 		try {
 			JSONObject originalObject = new JSONObject(jsonString);
 			JSONArray jsonArray = originalObject.getJSONArray("results");
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-				Tweet tweet = new Tweet(jsonObject);
+				Tweet tweet = new Tweet(jsonObject, searchString);
+				tweets.add(tweet);
 				DataStoreManager.AddTweet(tweet);
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		return tweets;
 	}
 }

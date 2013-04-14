@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script type="text/javascript" src="./tool.js"></script>
 <title>BuzzMap</title>
 <style type="text/css">
 .main_title {
@@ -57,6 +58,8 @@ body {
 <img src="images/transparent.png" width="17" height="10" alt="transperant" />
 <input id="category_textField" name="category_textField" class="input_font" type="text" size="19"/><br /><br />
 
+<input id="search_parameter" name="search_parameter" type="hidden" />
+
 <script language="javascript">
 function search_tweets() {
 	if (document.getElementById("location_textField").value == "") {
@@ -75,8 +78,13 @@ function search_tweets() {
 </script>
 
 <button id="search_button" class="normal_button" onclick="search_tweets()" >Search</button><br />
-<textarea name="result_textArea" cols="" rows=""></textarea>
 </form>
+
+<script language="javascript">
+var buzzString = "<%=request.getAttribute("buzzString") %>";
+alert(buzzString);
+</script>
+
 </div>
 </body>
 </html>
