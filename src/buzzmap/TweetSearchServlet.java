@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 @SuppressWarnings("serial")
 public class TweetSearchServlet extends HttpServlet {
 	public static final int Top_Buzz_Number = 10;
-	public static final int User_Per_Buzz = 5;
+	public static final int User_Per_Buzz = 100;
 	
 	public static ArrayList<String> buzzURL = new ArrayList<String>();
 	
@@ -36,7 +36,7 @@ public class TweetSearchServlet extends HttpServlet {
 			parameter.put("q", category);
 			parameter.put("rpp", "100");
 			parameter.put("geocode", String.valueOf(geocode.latitude) + "," + 
-					String.valueOf(geocode.longitude) + ",5mi");
+					String.valueOf(geocode.longitude) + ",100mi");
 			
 			String jsonString = TweetSearch.tweetSearch(parameter);
 			tweets = TweetSearch.parseTweet(jsonString, searchString);

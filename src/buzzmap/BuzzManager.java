@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 @SuppressWarnings("unused")
 public class BuzzManager {
 	private static final String NONE_BUZZ_WORD_STRINGS[] = {"a", "rt", "the", "at", "on", "in", "to", "by", 
-		"with", "without", "of", "not", "and", "or", "what", "which", "who", "how", "whether",
+		"with", "without", "for", "of", "not", "and", "or", "what", "which", "who", "how", "whether",
 		"I", "me", "my", "mine", "you", "your", "yours", "he", "him", "his", "she", "her",
 		"we", "our", "ours", "it", "its", "they", "them", "their",
 		"is", "are", "was", "were", "can", "could", "cannot"};
