@@ -1,3 +1,4 @@
+<%@ page import="buzzmap.TweetSearchServlet" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" import="java.sql.*" errorPage="" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -8,8 +9,19 @@
 <style type="text/css">
 .main_title {
 	font-family: "Goudy Old Style";
-	font-size: xx-large;
+	font-size: 97px;
 	color: #09F;
+	font-weight: bolder;
+}
+.sub_title {
+	font-family: "Goudy Old Style";
+	font-size: large;
+	color: #099;
+	font-weight: bold;
+}
+.buzz_frame {
+	height: 270px;
+	width: 700px;
 }
 .normal_font {
 	font-family: "Goudy Old Style";
@@ -47,6 +59,8 @@ body {
 <body>
 <div align="center">
 <a class="main_title">BuzzMap</a><br /><br />
+
+<!-- Form for search -->
 <form id="search_form">
 <img src="images/location.png" width="15" height="15" alt="location" />&nbsp;&nbsp;
 <font class="normal_font">Location:</font>
@@ -79,12 +93,31 @@ function search_tweets() {
 
 <button id="search_button" class="normal_button" onclick="search_tweets()" >Search</button><br />
 </form>
+<!-- End: Form for search -->
 
-<script language="javascript">
-var buzzString = "<%=request.getAttribute("buzzString") %>";
-alert(buzzString);
-</script>
-
-</div>
+<%TweetSearchServlet.buzzURL.clear();
+for (int i = 0; i < TweetSearchServlet.Top_Buzz_Number; i++) { 
+	if (request.getAttribute("buzzString" + i) != null) {
+		String buzzString[] = request.getAttribute("buzzString" + i).toString().split(",");
+%>
+		<p class="sub_title"><%out.print("No." + (i + 1) + " " + buzzString[0] + " " + buzzString[1] 
+				+ "(" + buzzString[2] + ")"); %></p>
+<%
+		String userString = "";
+		for (int j = 0; j < TweetSearchServlet.User_Per_Buzz; j++) {
+			if (request.getAttribute("userString" + i + "," + j) != null) {
+				userString += "@;@" + request.getAttribute("userString" + i + "," + j).toString();
+			}
+		}
+		TweetSearchServlet.buzzURL.add(userString.substring(3));
+%>
+		<script type="text/javascript">
+		document.write("<iframe class='buzz_frame' src='buzz.jsp?n=" + "<%=i %>" + "' ></iframe>");
+		</script>
+<%
+	}
+}
+%>
+</div><br /><br />
 </body>
 </html>

@@ -11,16 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @SuppressWarnings("serial")
-public class TweetSearchServlet extends HttpServlet{
-	private static final int Top_Buzz_Number = 10;
-	private static final int User_Per_Buzz = 5;
+public class TweetSearchServlet extends HttpServlet {
+	public static final int Top_Buzz_Number = 10;
+	public static final int User_Per_Buzz = 5;
+	
+	public static ArrayList<String> buzzURL = new ArrayList<String>();
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws IOException, ServletException {
-		/*
-		 * Return url in format:
-		 * 	index.jsp?buzz=buzz_name,sentiment@;@user1_name,user1_text,user1_image@,@user2_name...&buzz=
-		 */
 		
 		String location = request.getParameter("location_textField").toLowerCase();
 		String category = request.getParameter("category_textField").toLowerCase();
@@ -47,26 +45,25 @@ public class TweetSearchServlet extends HttpServlet{
 		}
 
 		Sentiment sentiment = new Sentiment();
-		String buzzString = "";
 		int buzzCount = 0;
 		ArrayList<Entry<String, Buzz>> tweetList = BuzzManager.extractBuzz(tweets);
 		for (Entry<String, Buzz> entry : tweetList) {
 			Buzz buzz = entry.getValue();
-			buzzString = buzzString + "&buzz" + "=" + buzz.buzzName + "," + 
-					sentiment.checkSentiment(buzz.buzzName) + "@;@";
+			String buzzString = buzz.buzzName + "," + sentiment.checkSentiment(buzz.buzzName) 
+					+ "," + buzz.count;
+			request.setAttribute("buzzString" + buzzCount, buzzString);
 			
-			String userString = "";
 			int userCount = 0;
 			for (Tweet tweet : buzz.tweets) {
-				userString = userString + "@,@" + tweet.from_user_name + "," + tweet.text + "," + tweet.profile_image_url;
+				String userString = tweet.from_user_name + "@,@" + tweet.text + "@,@" 
+						+ tweet.profile_image_url;
+				request.setAttribute("userString" + buzzCount + "," + userCount, userString);
 				if (++userCount == User_Per_Buzz) break;
 			}
-			buzzString = buzzString + userString.substring(3);
 			
 			if (++buzzCount == Top_Buzz_Number) break;
 		}
-
-		request.setAttribute("buzzString", buzzString.substring(1));
+		
 		request.getRequestDispatcher("index.jsp").forward(request, response);
 	}
 }

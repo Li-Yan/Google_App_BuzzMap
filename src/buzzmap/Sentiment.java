@@ -17,9 +17,8 @@ public class Sentiment {
 		try {
 			reader = new BufferedReader(new FileReader("AFINN-111.txt"));
 			while ((lineString = reader.readLine()) != null) {
-				String ss[] = lineString.split(" ");
+				String ss[] = lineString.split("\t");
 				sentimentMap.put(ss[0], Integer.parseInt(ss[1]));
-				System.out.println(ss[0] + " " + ss[1]);
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
